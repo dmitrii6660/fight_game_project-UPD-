@@ -51,9 +51,5 @@ public class FlickerEffect : MonoBehaviour
 
 
     sr.enabled = false; // setting off effect
-    
-    Debug.Log("Эффект моргания завершен.");
-        
-        Debug.Log("Эффект моргания завершен.");
     }
 }

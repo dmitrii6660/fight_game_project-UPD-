@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerPickup : MonoBehaviour
 {
-    // item positien when player is holding it (EULERS cordinates) (X, Y, Z)
+    // item position when player is holding it (EULERS cordinates) (X, Y, Z)
     public Vector3 heldItemRotation = new Vector3(0f, 0f, 15f);
 
     // hold point

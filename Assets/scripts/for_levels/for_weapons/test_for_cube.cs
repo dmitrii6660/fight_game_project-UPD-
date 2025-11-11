@@ -2,16 +2,14 @@ using TMPro;
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEditor;
 
 public class test_for_cube : MonoBehaviour
 {
     // for bg animation when enemy is destroyed
     public FlickerEffect targetFlickerScript;
 
-    // test texts
-    /* public TextMeshProUGUI pts;
-    public TextMeshProUGUI pts_hover;
-    private int score; */
+    private TrackableItem trackableItem;
     
     // test colors
     public Color emptyHandColor = Color.blue;
@@ -19,11 +17,25 @@ public class test_for_cube : MonoBehaviour
 
     // other components
     private SpriteRenderer cubeRenderer;
-    private PlayerPickup playerScript; // link on player script
+    private PlayerPickup playerScript; // link on player scrip
+
+    //test var
+    private bool inTrigger;
 
     void Start()
     {
         cubeRenderer = GetComponent<SpriteRenderer>();
+          // when game starts adding to enemy_list
+        CollectableManager.Instance.RegisterItem(this.gameObject);
+    }
+
+    void Update()
+    {
+        if(Input.GetMouseButtonDown(0) && inTrigger == true)
+        {
+            Interact();
+            
+        }
     }
 
     // when player entering into trigger
@@ -35,8 +47,11 @@ public class test_for_cube : MonoBehaviour
             // getting link on script
             playerScript = other.GetComponent<PlayerPickup>();
 
-            if (playerScript != null && Input.GetMouseButtonDown(1))
+            inTrigger = true;
+
+            if (playerScript != null && Input.GetMouseButtonDown(0))
             {
+                Debug.Log("u hitted to obj");
                 Interact();
             }
         }
@@ -53,17 +68,8 @@ public class test_for_cube : MonoBehaviour
         {
             // little test
             Debug.Log("player has leaved");
+            inTrigger = false;
         }
-    }
-
-    // when player is staying in trigger
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Interact();
-        }
-         Debug.Log("player in trigger");
     }
 
     // interract logic
@@ -83,6 +89,15 @@ public class test_for_cube : MonoBehaviour
             Debug.Log("hitted by item");
 
             targetFlickerScript.StartFlicker();
+            DestroyItem();
         }
+    }
+     public void DestroyItem()
+    {
+        // calling to enemy_managr thats obj(this enemy) is destroyed
+        CollectableManager.Instance.ItemDestroyed(this.gameObject);
+
+        // destroying current obj
+        Destroy(this.gameObject);
     }
 }
