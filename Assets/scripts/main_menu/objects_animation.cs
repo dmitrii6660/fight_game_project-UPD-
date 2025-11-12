@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class test : MonoBehaviour
+public class house_moving : MonoBehaviour
 {
      Vector3 currentPos;
     public Transform startPoint;   // start point
