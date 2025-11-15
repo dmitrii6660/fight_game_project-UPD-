@@ -1,3 +1,10 @@
+/* 
+tässä scriptissä tarkistetaan että onko kaikki viholliset kuollut, jos on niin avataan uuden
+kerroksen, jos viiminen kerros on hoidettu niin sitten pelaaja voi mennä autoon ja taso on läpi
+Myös tässä scriptissä anettaan pisteitä tapetuista vihollisista
+*/
+
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,6 +12,13 @@ using UnityEngine;
 
 public class CollectableManager : MonoBehaviour
 {
+    // for next floor trigger
+    public GameObject floor2;
+    public GameObject floor1;
+
+    // for level cleared text
+    public TextMeshProUGUI floor_cleared_text;
+
     //for pts text
     public TextMeshProUGUI pts;
     public TextMeshProUGUI pts_hover;
@@ -19,6 +33,8 @@ public class CollectableManager : MonoBehaviour
 
     void Awake()
     {
+        floor1.SetActive(false);
+        floor2.SetActive(false);
         finalText.SetActive(false);
     
         if (Instance == null)
@@ -38,37 +54,46 @@ public class CollectableManager : MonoBehaviour
         Debug.Log($"enemy added: {remainingItems.Count}");
     }
 
-    // befory every destroyed enemy
+    // before every destroyed enemy
     public void ItemDestroyed(GameObject destroyedItem)
     {
         // deleting enemy from list
         remainingItems.Remove(destroyedItem);
 
         Debug.Log($"enemy is destroyed: {remainingItems.Count}");
-          if (int.TryParse(pts.text, out int currentScore))
-            {
-                pts.text = (currentScore + 100).ToString();
-                pts_hover.text = (currentScore + 100).ToString();
-            }
 
-            score += 100;
-            pts.text = "pts " + score;
-            pts_hover.text = "pts " + score;
-
-        // if enemy list is null (all enemies is destroyed)
-        if (remainingItems.Count == 0)
+        // for points adding
+        if (int.TryParse(pts.text, out int currentScore))
         {
-            AllItemsCollected();
+            pts.text = (currentScore + 100).ToString();
+            pts_hover.text = (currentScore + 100).ToString();
+        }
+
+        score += 100;
+        pts.text = "pts " + score;
+        pts_hover.text = "pts " + score;
+
+        // if enemy list
+        if (remainingItems.Count == 1)
+        {
+            floor_cleared_text.text = "floor cleared";
+
+            StartCoroutine(finalTextCoroutine());
+
+            floor2.SetActive(true);
+        }
+        else if (remainingItems.Count == 0)
+        {
+            floor_cleared_text.text = "level cleared";
+
+            floor2.SetActive(true);
+            floor1.SetActive(true);
+
+            StartCoroutine(finalTextCoroutine());
         }
     }
 
     // method when all enemies is destroyed
-    private void AllItemsCollected()
-    {
-        Debug.Log("level clear!");
-        //finalText.SetActive(true);
-        StartCoroutine(finalTextCoroutine());
-    }
 
     private IEnumerator finalTextCoroutine()
     {

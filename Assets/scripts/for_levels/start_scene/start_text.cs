@@ -7,7 +7,7 @@ public class start_text : MonoBehaviour
 {
     public GameObject temporaryTextObject;
     public float displayDuration = 3f;
-    public string initialMessage = "Добро пожаловать в игру!";
+    public string initialMessage = "welcome to scene!";
 
     void Start()
     {
