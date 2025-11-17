@@ -6,6 +6,10 @@ using UnityEditor;
 
 public class test_for_cube : MonoBehaviour
 {
+    public GameObject idleSprite;
+    public SpriteRenderer sr;
+    public Sprite damagetSprite;
+    public enemyAI enemyLogic;
     // for bg animation when enemy is destroyed
     public FlickerEffect targetFlickerScript;
 
@@ -19,11 +23,15 @@ public class test_for_cube : MonoBehaviour
     private SpriteRenderer cubeRenderer;
     private PlayerPickup playerScript; // link on player scrip
 
-    //test var
+    private bool isTiming = false;
+
     private bool inTrigger;
+
+    public Transform holdPoint;
 
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
         cubeRenderer = GetComponent<SpriteRenderer>();
           // when game starts adding to enemy_list
         CollectableManager.Instance.RegisterItem(this.gameObject);
@@ -34,7 +42,6 @@ public class test_for_cube : MonoBehaviour
         if(Input.GetMouseButtonDown(0) && inTrigger == true)
         {
             Interact();
-            
         }
     }
 
@@ -66,9 +73,15 @@ public class test_for_cube : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // little test
-            Debug.Log("player has leaved");
             inTrigger = false;
+        }
+    }
+
+    public void enemyHit()
+    {
+        if (!isTiming)
+        {
+            StartCoroutine(enemyHitCoroutine());
         }
     }
 
@@ -80,8 +93,12 @@ public class test_for_cube : MonoBehaviour
 
         if (item == null)
         {
-            cubeRenderer.color = emptyHandColor;
-            Debug.Log("hitted by hands");
+            //cubeRenderer.color = emptyHandColor;
+            cubeRenderer.sprite = null;
+            cubeRenderer.sprite = damagetSprite;
+            enemyLogic.enabled = false;
+            holdPoint.SetParent(null);
+            enemyHit();
         }
         else
         {
@@ -99,5 +116,32 @@ public class test_for_cube : MonoBehaviour
 
         // destroying current obj
         Destroy(this.gameObject);
+    }
+
+    private IEnumerator enemyHitCoroutine()
+    {
+        isTiming = true;
+
+        float startTime = Time.time;
+        float duration = 3f;
+
+        while (Time.time < startTime + duration) 
+        {
+            if (inTrigger && Input.GetKeyDown(KeyCode.Space)) 
+            {
+                Debug.Log("enemy destroyed");
+                // game logic if enemy is destroy
+                DestroyItem();
+                break; 
+            }
+            idleSprite.SetActive(false);
+            yield return null; 
+        }
+
+        isTiming = false;
+        Debug.Log("timing is false");
+        idleSprite.SetActive(true);
+        enemyLogic.enabled = true;
+        //cubeRenderer.color = itemHandColor;
     }
 }
