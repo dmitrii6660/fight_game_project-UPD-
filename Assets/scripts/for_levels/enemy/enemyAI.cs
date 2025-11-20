@@ -1,7 +1,10 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class enemyAI : MonoBehaviour
 {
+    public GameObject enemyHoldPoint;
     public GameObject player;
 
     public float speed;
@@ -48,19 +51,32 @@ public class enemyAI : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         sr.sprite = idleSprite;
+        if(enemyHoldPoint != null)
+        {
+            Debug.Log("enemy has weapon");
+            enemyRouting.withWeapon = true;
+        }
     }
 
     void Update()
     {
+        if(enemyHoldPoint == null)
+        {
+            enemyRouting.withWeapon = true;
+        }
+        else
+        {
+            enemyRouting.withWeapon = false;
+        }
+
         distance = Vector2.Distance(transform.position, player.transform.position);
         Vector2 direction = (player.transform.position - transform.position).normalized;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         // is enemy see a player
-        int layerMask = ~LayerMask.GetMask("Enemy", "Weapon"); // ignoring enemy and weapon layer
+        int layerMask = ~LayerMask.GetMask("Enemy", "Weapon", "AttackRadius"); // ignoring enemy and weapon layer
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, spotDistance, layerMask);
-
 
         if (hit.collider != null)
         {
@@ -95,6 +111,14 @@ public class enemyAI : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, player.transform.position);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(canSeePlayer == true && other.CompareTag("PlayerCore") && enemyRouting.enemyDamaged == false && enemyRouting.withWeapon == true)
+        {
+            routiing.isDead = true;
         }
     }
 }

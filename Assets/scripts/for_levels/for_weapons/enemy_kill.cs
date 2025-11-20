@@ -3,11 +3,19 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using UnityEditor;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
-public class test_for_cube : MonoBehaviour
+public class enemy_kill : MonoBehaviour
 {
+    public GameObject player;
+    movement playerMove;
+
+    Rigidbody2D playerRB;
+
     public GameObject idleSprite;
-    public SpriteRenderer sr;
     public Sprite damagetSprite;
     public enemyAI enemyLogic;
     // for bg animation when enemy is destroyed
@@ -29,9 +37,12 @@ public class test_for_cube : MonoBehaviour
 
     public Transform holdPoint;
 
+    public SpriteRenderer playerSprite;
+
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
+        playerRB = player.GetComponent<Rigidbody2D>();
+        playerMove = player.GetComponent<movement>();
         cubeRenderer = GetComponent<SpriteRenderer>();
           // when game starts adding to enemy_list
         CollectableManager.Instance.RegisterItem(this.gameObject);
@@ -49,10 +60,12 @@ public class test_for_cube : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // if player have "Player" tag
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("PlayerC"))
         {
+              //playerSR.sprite = executeSprite[0];
+            
             // getting link on script
-            playerScript = other.GetComponent<PlayerPickup>();
+            playerScript = player.GetComponent<PlayerPickup>();
 
             inTrigger = true;
 
@@ -71,7 +84,7 @@ public class test_for_cube : MonoBehaviour
     // player leave from trigger
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("PlayerC"))
         {
             inTrigger = false;
         }
@@ -93,7 +106,7 @@ public class test_for_cube : MonoBehaviour
 
         if (item == null)
         {
-            //cubeRenderer.color = emptyHandColor;
+            enemyRouting.enemyDamaged = true;
             cubeRenderer.sprite = null;
             cubeRenderer.sprite = damagetSprite;
             enemyLogic.enabled = false;
@@ -118,6 +131,7 @@ public class test_for_cube : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    /* when enmy is lies*/
     private IEnumerator enemyHitCoroutine()
     {
         isTiming = true;
@@ -129,9 +143,12 @@ public class test_for_cube : MonoBehaviour
         {
             if (inTrigger && Input.GetKeyDown(KeyCode.Space)) 
             {
+                playerRB.constraints = RigidbodyConstraints2D.FreezeAll;
                 Debug.Log("enemy destroyed");
+                player.transform.position = gameObject.transform.position;
+                playerSprite.transform.rotation = gameObject.transform.rotation;
+                StartCoroutine(executeCoroutine());
                 // game logic if enemy is destroy
-                DestroyItem();
                 break; 
             }
             idleSprite.SetActive(false);
@@ -141,7 +158,22 @@ public class test_for_cube : MonoBehaviour
         isTiming = false;
         Debug.Log("timing is false");
         idleSprite.SetActive(true);
+        enemyRouting.enemyDamaged = false;
         enemyLogic.enabled = true;
-        //cubeRenderer.color = itemHandColor;
+    }
+
+    // when player is executing enemy
+    public IEnumerator executeCoroutine()
+    {
+        routiing.isExecute = true;
+        playerMove.enabled = false;   
+        yield return new WaitForSeconds(2);
+        playerMove.enabled = true;
+        DestroyItem();
+        routiing.isExecute = false;
+        playerRB.constraints = RigidbodyConstraints2D.None;
+        playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        yield return null;
     }
 }
