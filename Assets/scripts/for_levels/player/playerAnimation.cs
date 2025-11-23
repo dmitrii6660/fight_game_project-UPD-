@@ -24,7 +24,7 @@ public class spriteChanger : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             StopAllCoroutines();
-            StartCoroutine(hitCoroutine());
+            StartCoroutine(attackCoroutine());
         }
 
         if(routiing.isExecute == true)
@@ -48,7 +48,7 @@ public class spriteChanger : MonoBehaviour
         legs.SetActive(true);
         yield return null;
     }
-    private IEnumerator hitCoroutine()
+    private IEnumerator attackCoroutine()
     {
         sr.sprite = hitSprites[0];
         yield return new WaitForSeconds(0.2f);

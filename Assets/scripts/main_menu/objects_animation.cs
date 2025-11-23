@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class house_moving : MonoBehaviour
 {
-     Vector3 currentPos;
+    Vector3 currentPos;
     public Transform startPoint;   // start point
     public Transform targetPoint;  // target
     public float speed = 2f;       // moving speed

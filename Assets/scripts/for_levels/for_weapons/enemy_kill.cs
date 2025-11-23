@@ -156,7 +156,7 @@ public class enemy_kill : MonoBehaviour
         }
 
         isTiming = false;
-        Debug.Log("timing is false");
+        //Debug.Log("timing is false");
         idleSprite.SetActive(true);
         enemyRouting.enemyDamaged = false;
         enemyLogic.enabled = true;

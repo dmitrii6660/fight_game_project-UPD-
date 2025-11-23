@@ -1336,6 +1336,7 @@ GameObject:
   - component: {fileID: 287643278}
   - component: {fileID: 287643282}
   - component: {fileID: 287643283}
+  - component: {fileID: 287643284}
   m_Layer: 6
   m_Name: enemy
   m_TagString: Untagged
@@ -1501,7 +1502,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287643277}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1c1eaad2b5cc884a8defe74a8b8db53, type: 3}
   m_Name: 
@@ -1517,6 +1518,27 @@ MonoBehaviour:
   idleSprite: {fileID: 0}
   damagetSprite: {fileID: 0}
   animationSpeed: 0.3
+  sr: {fileID: 0}
+--- !u!114 &287643284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287643277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9677507d620e1f54eb47d68317493a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  enemyHoldPoint: {fileID: 0}
+  player: {fileID: 422178574}
+  spotDistance: 10
+  movementSprites: []
+  idleSprite: {fileID: 0}
+  damagedSprite: {fileID: 0}
+  animationSpeed: 0.1
   sr: {fileID: 0}
 --- !u!1 &365755023
 GameObject:
@@ -1971,6 +1993,7 @@ GameObject:
   - component: {fileID: 422178575}
   - component: {fileID: 422178581}
   - component: {fileID: 422178582}
+  - component: {fileID: 422178583}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -2152,13 +2175,26 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422178574}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3f12e03320914f43a0f14fc907cfc06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   deathText: {fileID: 1773167462}
   player: {fileID: 422178574}
+--- !u!114 &422178583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422178574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee9f7270d427604d98df0711de0dad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathText: {fileID: 1773167462}
 --- !u!1 &453009315
 GameObject:
   m_ObjectHideFlags: 0

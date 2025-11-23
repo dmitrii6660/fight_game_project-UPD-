@@ -1,25 +1,28 @@
+using System.Collections;
 using UnityEngine;
-using TMPro;
 
-public class dead : MonoBehaviour
+public class playerScript : MonoBehaviour
 {
-    public GameObject deathText;
-    public GameObject player;
+    private bool inTrigger = false;
+
+    //player movement script
     movement playerMove;
 
+    //for dead
+    public GameObject deathText;
     private void playerIsDead()
     {
-        //Debug.Log("player dead void is started");
+        gameObject.transform.position = new Vector3(0, 0, 0);
         playerMove.enabled = false;
         deathText.SetActive(true);
         if(Input.GetKeyDown(KeyCode.R))
         {
-            gameObject.transform.position = new Vector3(0, 0, 0);
-            routiing.isDead = false;
+            playerMode.playerIsDead = false; 
             deathText.SetActive(false);
+            playerMove.enabled = true;
         }
-
     }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,13 +32,15 @@ public class dead : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(routiing.isDead == true)
+        if(playerMode.playerIsDead == true)
         {
+            Debug.Log("player is death!!!!");
             playerIsDead();
         }
-        else
+
+        if(Input.GetMouseButtonDown(0) && inTrigger == true)
         {
-            playerMove.enabled = true;
+            
         }
     }
 }

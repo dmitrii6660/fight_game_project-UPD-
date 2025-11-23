@@ -71,6 +71,7 @@ public class PlayerPickup : MonoBehaviour
         // MAIN LOGIC
         // making item -> child item for player obj
         heldItem.transform.SetParent(holdPoint);
+        playerMode.playerHaveWeapon = true;
         
         // set null item local position
         heldItem.transform.localPosition = Vector3.zero;
@@ -94,6 +95,7 @@ public class PlayerPickup : MonoBehaviour
     {
         // disabling from player obj (parent = null)
         heldItem.transform.SetParent(null);
+        playerMode.playerHaveWeapon = false;
 
         // enable collider
         heldItem.GetComponent<Collider2D>().enabled = true;
