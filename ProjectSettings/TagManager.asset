@@ -8,7 +8,7 @@ TagManager:
   - Pickup
   - Enemy
   - PlayerCore
-  - PlayerC
+  - PlayerAttackRadius
   layers:
   - Default
   - TransparentFX

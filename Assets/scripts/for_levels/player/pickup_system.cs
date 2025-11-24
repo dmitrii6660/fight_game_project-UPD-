@@ -60,6 +60,7 @@ public class PlayerPickup : MonoBehaviour
     // pickup logic
     private void Pickup()
     {
+        playerMode.playerHaveWeapon = true;
         Debug.Log("player gets: " + itemInRange.name);
         
         // item is now in player hands
@@ -93,6 +94,7 @@ public class PlayerPickup : MonoBehaviour
     // drop down logic
     private void Drop()
     {
+        playerMode.playerHaveWeapon = false;
         // disabling from player obj (parent = null)
         heldItem.transform.SetParent(null);
         playerMode.playerHaveWeapon = false;

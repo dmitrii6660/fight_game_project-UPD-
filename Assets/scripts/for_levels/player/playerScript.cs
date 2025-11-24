@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class playerScript : MonoBehaviour
 {
+    Rigidbody2D rb;
     private bool inTrigger = false;
+
+    public Transform holdPoint;
 
     //player movement script
     movement playerMove;
@@ -26,6 +29,7 @@ public class playerScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         playerMove = GetComponent<movement>();
     }
 
@@ -38,9 +42,23 @@ public class playerScript : MonoBehaviour
             playerIsDead();
         }
 
-        if(Input.GetMouseButtonDown(0) && inTrigger == true)
+        if(playerMode.playerIsExecuting)
         {
-            
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
+        else
+        {
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+
+        /*if(holdPoint == null)
+        {
+            playerMode.playerHaveWeapon = false;
+        }
+        else
+        {
+            playerMode.playerHaveWeapon = true;
+        }*/
     }
 }

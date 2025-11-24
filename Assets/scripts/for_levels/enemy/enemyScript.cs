@@ -31,9 +31,9 @@ public class enemyScript : MonoBehaviour
     public SpriteRenderer sr;
 
     private bool isDamaged = false;
-    public bool withWeapon;
+    private bool withWeapon;
     //enemy start settings
-    public bool withWeaponStart;
+    private bool withWeaponStart;
     Vector3 startPosition;
 
     // 
@@ -41,11 +41,11 @@ public class enemyScript : MonoBehaviour
     {
         if(enemyHoldPoint == null)
         {
-            withWeapon = true;
+            withWeapon = false;
         }
         else
         {
-            withWeapon = false;
+            withWeapon = true;
         }
 
         distance = Vector2.Distance(transform.position, player.transform.position);
@@ -84,9 +84,10 @@ public class enemyScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player") && withWeapon == true)
+        if(other.CompareTag("Player") && withWeapon == true && isDamaged == false)
         {
             playerMode.playerIsDead = true;
+            Debug.Log("player is dead");
         }
         else if(other.CompareTag("PlayerAttackRadius"))
         {
@@ -104,13 +105,15 @@ public class enemyScript : MonoBehaviour
 
     private void Interact()
     {
-        if(playerMode.playerHaveWeapon)
+        if(playerMode.playerHaveWeapon == false)
         {
+            Debug.Log("player has weapon");
             enemyHoldPoint.SetParent(null);
             enemyIsHitted();
         }
         else
         {
+            Debug.Log("player no weapon");
             destroyEnemy();
         }
     }
@@ -141,16 +144,17 @@ public class enemyScript : MonoBehaviour
                 StartCoroutine(executeCoroutine());
                 // game logic if enemy is destroy
                 break; 
-                yield return null; 
             }
-            isDamaged = false;
-            isTiming = false;
+            yield return null;
         }
+        isDamaged = false;
+        isTiming = false;
     }
 
     // when player is executing 
     private IEnumerator executeCoroutine()
     {
+        isDamaged = true;
         playerMode.playerIsExecuting = true;
         yield return new WaitForSeconds(2);
         destroyEnemy();
@@ -169,12 +173,17 @@ public class enemyScript : MonoBehaviour
    
     void Start()
     {
-        startPosition = transform.position;
+        CollectableManager.Instance.RegisterItem(this.gameObject); //add enemy to collectable manager
+
+        startPosition = transform.position; // getting enemy start position
+
         // otataan spriteRenderer komponentti
         sr = GetComponent<SpriteRenderer>();
+
         //asetetaan alku sprite viholisille
         sr.sprite = idleSprite;
 
+        //tarkistetaan onko viholisella ase
         if(enemyHoldPoint != null)
         {
             withWeapon = true;
@@ -195,6 +204,10 @@ public class enemyScript : MonoBehaviour
         if(playerMode.playerIsDead == true)
         {
             gameObject.transform.position = startPosition;
+        }
+        if(Input.GetMouseButtonDown(0) && inTrigger == true)
+        {
+            Interact();
         }
     }
 }

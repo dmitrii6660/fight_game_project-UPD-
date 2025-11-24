@@ -60,7 +60,7 @@ public class enemy_kill : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // if player have "Player" tag
-        if (other.CompareTag("PlayerC"))
+        if (other.CompareTag("PlayerAttackRadius"))
         {
               //playerSR.sprite = executeSprite[0];
             
@@ -84,7 +84,7 @@ public class enemy_kill : MonoBehaviour
     // player leave from trigger
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("PlayerC"))
+        if (other.CompareTag("PlayerAttackRadius"))
         {
             inTrigger = false;
         }
