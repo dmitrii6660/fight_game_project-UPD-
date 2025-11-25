@@ -12,6 +12,7 @@ using Unity.VisualScripting;
 
 public class start_scene : MonoBehaviour
 {
+    public GameObject endOfLevel;
     public GameObject pts_text; // pts text
     public GameObject startText; // start textes: secene name & scene number
  
@@ -22,6 +23,7 @@ public class start_scene : MonoBehaviour
     void Start()
     {
         //set all scripts and texts unactive mode
+        endOfLevel.SetActive(false);
         pts_text.SetActive(false);
         movement.enabled = false;
         StartCoroutine(startGameCoroutine());

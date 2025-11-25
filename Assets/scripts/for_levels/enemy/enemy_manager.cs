@@ -12,6 +12,9 @@ using UnityEngine;
 
 public class CollectableManager : MonoBehaviour
 {
+    //when level is cleared
+    public GameObject levelCleared;
+
     // for next floor trigger
     public GameObject floor2;
     public GameObject floor1;
@@ -33,6 +36,7 @@ public class CollectableManager : MonoBehaviour
 
     void Awake()
     {
+        levelCleared.SetActive(false);
         floor1.SetActive(false);
         floor2.SetActive(false);
         finalText.SetActive(false);
@@ -51,7 +55,7 @@ public class CollectableManager : MonoBehaviour
     public void RegisterItem(GameObject item)
     {
         remainingItems.Add(item);
-        Debug.Log($"enemy added: {remainingItems.Count}");
+        //Debug.Log($"enemy added: {remainingItems.Count}");
     }
 
     // before every destroyed enemy
@@ -89,6 +93,8 @@ public class CollectableManager : MonoBehaviour
             floor2.SetActive(true);
             floor1.SetActive(true);
 
+            levelCleared.SetActive(true);
+
             StartCoroutine(finalTextCoroutine());
         }
     }
@@ -100,5 +106,10 @@ public class CollectableManager : MonoBehaviour
         finalText.SetActive(true);
         yield return new WaitForSeconds(3f);
         finalText.SetActive(false);
+    }
+
+    private IEnumerator levelCompletedCoroutine()
+    {
+        yield return new WaitForSeconds(1);
     }
 }

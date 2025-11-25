@@ -4,48 +4,65 @@ using System.Collections;
 
 public class enemyScript : MonoBehaviour
 {
-    public float moveSpeed = 5.0f;
+    public float moveSpeed = 5.0f; //viholisen liikkumis nopeus
 
-    public Transform enemyHoldPoint;
-    public GameObject player;
+    public Transform enemyHoldPoint; //vihollisen holdPoint, eli objekti jolla hän pitää asen
+    public SpriteRenderer legs; //vihollisen jalat, tarvitaan animatiolle kun vihollinen liikku
+    public GameObject player; // pelaaja
+    public GameObject playerSprite;
 
-    private bool inTrigger = false;
+    private bool inTrigger = false; // onko pelaajan AttackRadius osunut viholliseen
 
     private bool isTiming = false;
 
-    public float spotDistance;
+    public float spotDistance; // kuinka pitkälle vihollinen voi nähdä pelaajan
 
-    private float distance;
+    private float distance; 
 
+    private bool canSeePlayer; // näkeekö vihollinen pelaajan
 
-    //is enemy see player or not
-    private bool canSeePlayer;
+    // animaatiolle (sprites)
+    public Sprite[] movementSprites; //vihollisen liikumis sprites
+    public Sprite idleSprite; //vihollisen tavallinen sprite, esim kun vihollinen on paikalla
+    public Sprite damagedSprite; // kun vihollista on lyöty
 
-    //for animation
-    public Sprite[] movementSprites; 
-    public Sprite idleSprite;    
-    public Sprite damagedSprite; 
+    // animaatiolle
     private int currentFrame = 0;
     private float timer = 0f;
     public float animationSpeed = 0.1f; 
-    public SpriteRenderer sr;
+    public SpriteRenderer sr; 
 
-    private bool isDamaged = false;
-    private bool withWeapon;
-    //enemy start settings
+    // muut tarkistuksen liittyviä juttuja
+    private bool isDamaged = false; //onko vihollinen nyt maassa
+    private bool withWeapon; //onko viholisella ase
+
+    //vihollisen alku asetukset
     private bool withWeaponStart;
     Vector3 startPosition;
+
+
+    // liikumis animaatio funktio
+    private void enemyMoveAnimation()
+    {
+        timer += Time.deltaTime;
+        if (timer >= animationSpeed)
+        {
+            currentFrame = (currentFrame + 1) % movementSprites.Length;
+            legs.sprite = movementSprites[currentFrame];
+            timer = 0f;
+        }
+    }
 
     // 
     private void enemyLogic()
     {
-        if(enemyHoldPoint == null)
+        if(enemyHoldPoint.childCount > 0)
         {
-            withWeapon = false;
+            withWeapon = true;
         }
         else
         {
-            withWeapon = true;
+            withWeapon = false;
         }
 
         distance = Vector2.Distance(transform.position, player.transform.position);
@@ -87,7 +104,6 @@ public class enemyScript : MonoBehaviour
         if(other.CompareTag("Player") && withWeapon == true && isDamaged == false)
         {
             playerMode.playerIsDead = true;
-            Debug.Log("player is dead");
         }
         else if(other.CompareTag("PlayerAttackRadius"))
         {
@@ -108,7 +124,11 @@ public class enemyScript : MonoBehaviour
         if(playerMode.playerHaveWeapon == false)
         {
             Debug.Log("player has weapon");
-            enemyHoldPoint.SetParent(null);
+            foreach (Transform child in enemyHoldPoint)
+            {
+                child.SetParent(null);
+            }
+
             enemyIsHitted();
         }
         else
@@ -132,6 +152,8 @@ public class enemyScript : MonoBehaviour
     {
         isDamaged = true;
         isTiming = true;
+        legs.enabled = false;
+        sr.sprite = damagedSprite;
 
         float startTime = Time.time;
         float duration = 3f;
@@ -141,6 +163,7 @@ public class enemyScript : MonoBehaviour
             if (inTrigger && Input.GetKeyDown(KeyCode.Space))
             {
                 player.transform.position = gameObject.transform.position;
+                playerSprite.transform.rotation = gameObject.transform.rotation;
                 StartCoroutine(executeCoroutine());
                 // game logic if enemy is destroy
                 break; 
@@ -149,6 +172,8 @@ public class enemyScript : MonoBehaviour
         }
         isDamaged = false;
         isTiming = false;
+        legs.enabled = true;
+        sr.sprite = idleSprite;
     }
 
     // when player is executing 
@@ -177,21 +202,10 @@ public class enemyScript : MonoBehaviour
 
         startPosition = transform.position; // getting enemy start position
 
-        // otataan spriteRenderer komponentti
-        sr = GetComponent<SpriteRenderer>();
-
         //asetetaan alku sprite viholisille
         sr.sprite = idleSprite;
 
         //tarkistetaan onko viholisella ase
-        if(enemyHoldPoint != null)
-        {
-            withWeapon = true;
-        }
-        else
-        {
-            withWeapon = false;
-        }
     }
 
     void Update()
@@ -201,6 +215,11 @@ public class enemyScript : MonoBehaviour
             enemyLogic();
         }
 
+        if(canSeePlayer == true)
+        {
+            enemyMoveAnimation();
+        }
+
         if(playerMode.playerIsDead == true)
         {
             gameObject.transform.position = startPosition;
@@ -208,6 +227,10 @@ public class enemyScript : MonoBehaviour
         if(Input.GetMouseButtonDown(0) && inTrigger == true)
         {
             Interact();
+        }
+        if(playerMode.playerIsExecuting)
+        {
+            legs.enabled = false;
         }
     }
 }

@@ -21,32 +21,11 @@ public class spriteChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && playerMode.playerIsExecuting == false)
         {
             StopAllCoroutines();
             StartCoroutine(attackCoroutine());
         }
-
-        if(routiing.isExecute == true)
-        {
-            //StopAllCoroutines();
-            StopCoroutine(executeCoroutine());
-            StartCoroutine(executeCoroutine());
-        }
-    }
-
-    private IEnumerator executeCoroutine()
-    {
-        rotateScript.enabled = false;
-        legs.SetActive(false);
-        sr.sprite = executeSprites[0];
-        yield return new WaitForSeconds(1);
-        sr.sprite = executeSprites[1];
-        yield return new WaitForSeconds(1);
-        sr.sprite = playerSprite;
-        rotateScript.enabled = true;
-        legs.SetActive(true);
-        yield return null;
     }
     private IEnumerator attackCoroutine()
     {
