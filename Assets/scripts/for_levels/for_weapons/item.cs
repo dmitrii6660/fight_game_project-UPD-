@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ItemBehaviour : MonoBehaviour
 {
+
+    Vector3 startPosition;
     public Vector3 groundedRotationEuler = new Vector3(0, 0, 45f);
 
     // var for checking is item child obj or not
@@ -18,6 +20,7 @@ public class ItemBehaviour : MonoBehaviour
     void Start()
     {
         CheckParent();
+        startPosition = gameObject.transform.position;
     }
 
 
@@ -45,6 +48,10 @@ public class ItemBehaviour : MonoBehaviour
 
     void Update()
     {
+        if(playerMode.playerIsDead == true)
+        {
+            gameObject.transform.position = startPosition;
+        }
         //some code here
     }
 

@@ -38,6 +38,7 @@ public class enemyScript : MonoBehaviour
 
     //vihollisen alku asetukset
     private bool withWeaponStart;
+    public GameObject enemyStartWeapon; // vihollisen alku ase (haluttaessa)
     Vector3 startPosition;
 
 
@@ -133,6 +134,10 @@ public class enemyScript : MonoBehaviour
         }
         else
         {
+            foreach (Transform child in enemyHoldPoint)
+            {
+                child.SetParent(null);
+            }
             Debug.Log("player no weapon");
             destroyEnemy();
         }
@@ -190,14 +195,21 @@ public class enemyScript : MonoBehaviour
     public void destroyEnemy()
     {
         // calling to enemy_managr thats obj(this enemy) is destroyed
-        CollectableManager.Instance.ItemDestroyed(this.gameObject);
+        //CollectableManager.Instance.ItemDestroyed(this.gameObject);
 
         // destroying current obj
-        Destroy(this.gameObject);
+        gameObject.transform.position = new Vector3(0, 0, 100);
     }
    
     void Start()
     {
+        //tarkistetaan että vihollisella on ase
+        if(enemyHoldPoint.childCount > 0)
+        {
+            withWeaponStart = true;
+            Debug.Log("enemy have a start weapon");
+        }
+        
         CollectableManager.Instance.RegisterItem(this.gameObject); //add enemy to collectable manager
 
         startPosition = transform.position; // getting enemy start position
@@ -222,7 +234,9 @@ public class enemyScript : MonoBehaviour
 
         if(playerMode.playerIsDead == true)
         {
+            this.gameObject.SetActive(true);
             gameObject.transform.position = startPosition;
+            enemyStartWeapon.transform.SetParent(enemyHoldPoint.transform);
         }
         if(Input.GetMouseButtonDown(0) && inTrigger == true)
         {
