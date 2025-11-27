@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class level_completed : MonoBehaviour
 {
+    public GameObject targetUI;
     public TextMeshProUGUI[] options;
     private int currentIndex = 1;
     public GameObject endOfLevel;
@@ -45,6 +46,7 @@ public class level_completed : MonoBehaviour
 
     private void OnTriggerEnter2D()
     {
+        targetUI.SetActive(false);
         StartCoroutine(transitionCoroutine());
     }
 

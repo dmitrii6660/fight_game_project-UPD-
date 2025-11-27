@@ -17,6 +17,16 @@ public class ItemBehaviour : MonoBehaviour
     // for avoid many animations 
     private bool isAttacking = false;
 
+    //for float up/down
+    public float amplitude = 0.2f;   
+    public float frequency = 2f;     
+
+    private void floatUpDown()
+    {
+        float offset = Mathf.Sin(Time.time * frequency) * amplitude;
+        transform.position = new Vector3(startPosition.x, startPosition.y + offset, startPosition.z);
+    }
+
     void Start()
     {
         CheckParent();
@@ -38,6 +48,7 @@ public class ItemBehaviour : MonoBehaviour
             isHeld = false;
 
             //set world cordinates here
+            startPosition = gameObject.transform.position;
             transform.rotation = Quaternion.Euler(groundedRotationEuler);
         }
         else
@@ -48,9 +59,9 @@ public class ItemBehaviour : MonoBehaviour
 
     void Update()
     {
-        if(playerMode.playerIsDead == true)
+        if(isHeld == false)
         {
-            gameObject.transform.position = startPosition;
+            floatUpDown();
         }
         //some code here
     }

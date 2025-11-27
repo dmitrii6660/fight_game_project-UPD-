@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: e8d58cace669af141b8840c9cabd867f
+guid: 386c89e4bb314f64a8c0746f39d42b85
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1572391234087474867
-    second: brick_0
+      213: 7333352242986666372
+    second: suitCase_0
+  - first:
+      213: 6379502333806425628
+    second: suitCase_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: brick_0
+      name: suitCase_0
       rect:
         serializedVersion: 2
-        x: 47
-        y: 47
-        width: 130
-        height: 130
+        x: 0
+        y: 83
+        width: 953
+        height: 814
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +131,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d492744e08ebd2ae0800000000000000
-      internalID: -1572391234087474867
+      spriteID: 489c800e20d45c560800000000000000
+      internalID: 7333352242986666372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: suitCase_1
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 372
+        width: 28
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c16be42929b888850800000000000000
+      internalID: 6379502333806425628
       vertices: []
       indices: 
       edges: []

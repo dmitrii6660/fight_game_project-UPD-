@@ -13,7 +13,7 @@ public class Fade_script : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
 
-        StartCoroutine(startFadeCoroutine());
+        //StartCoroutine(startFadeCoroutine());
         // test
         //GetComponent<Fade_script>().FadeIn(1f);
         //GetComponent<Fade_script>().FadeOut(2f);
@@ -47,7 +47,7 @@ public class Fade_script : MonoBehaviour
     }
 
     //curotine for start fade
-    private IEnumerator startFadeCoroutine()
+    /*private IEnumerator startFadeCoroutine()
     {
         GetComponent<Fade_script>().FadeOut(0.5f);
         yield return new WaitForSeconds(5f);
@@ -58,5 +58,5 @@ public class Fade_script : MonoBehaviour
         //GetComponent<Fade_script>().FadeOut(0.5f);
         Debug.Log("corotine is started");
         //yield return null;
-    }
+    }*/
 }

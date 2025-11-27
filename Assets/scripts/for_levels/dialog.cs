@@ -5,6 +5,7 @@ using UnityEditor.Rendering;
 
 public class dialog : MonoBehaviour
 {
+    public GameObject dialogObj;
     public GameObject player;
     movement playerMove;
 
@@ -17,6 +18,7 @@ public class dialog : MonoBehaviour
 
     private void OnTriggerEnter2D()
     {
+        dialogObj.SetActive(true);
         playerRB.constraints = RigidbodyConstraints2D.FreezeAll;
         playerMove.enabled = false;
         inTrigger = true;
@@ -36,11 +38,13 @@ public class dialog : MonoBehaviour
             playerMove.enabled = true;
             gameObject.SetActive(false);
             dialogUI.text = "";
+            dialogObj.SetActive(false);
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        dialogObj.SetActive(false);
         playerRB = player.GetComponent<Rigidbody2D>();
         playerMove = player.GetComponent<movement>();
         dialogUI.text = " ";

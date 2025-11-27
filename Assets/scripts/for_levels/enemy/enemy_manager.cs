@@ -90,6 +90,8 @@ public class CollectableManager : MonoBehaviour
         {
             floor_cleared_text.text = "level cleared";
 
+            level_storage.isLevelCleared = true;
+
             floor2.SetActive(true);
             floor1.SetActive(true);
 

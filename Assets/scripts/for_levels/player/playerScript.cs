@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playerScript : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class playerScript : MonoBehaviour
             playerMode.playerIsDead = false; 
             deathText.SetActive(false);
             playerMove.enabled = true;
+            SceneManager.LoadScene("level_1");
+            
         }
     }
 

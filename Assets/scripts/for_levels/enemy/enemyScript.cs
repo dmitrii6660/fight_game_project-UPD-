@@ -195,10 +195,11 @@ public class enemyScript : MonoBehaviour
     public void destroyEnemy()
     {
         // calling to enemy_managr thats obj(this enemy) is destroyed
-        //CollectableManager.Instance.ItemDestroyed(this.gameObject);
+        CollectableManager.Instance.ItemDestroyed(this.gameObject);
 
         // destroying current obj
-        gameObject.transform.position = new Vector3(0, 0, 100);
+        Destroy(this.gameObject);
+        playerMode.playerIsExecuting = false;
     }
    
     void Start()
