@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 public class start_level : MonoBehaviour
 {
     movement playerMove;
+
+      public Fade_script fade;
     public GameObject startTextes;
     public GameObject player;
 
@@ -20,12 +22,20 @@ public class start_level : MonoBehaviour
         startTextes.SetActive(true);
         startAnimation.SetActive(true);
         StartCoroutine(teleportingToLevel());
+        StartCoroutine(fadeCoroutine());
     }
 
     private IEnumerator teleportingToLevel()
     {
         yield return new WaitForSeconds(6);
         SceneManager.LoadScene("level_1");
+    }
+
+     private IEnumerator fadeCoroutine()
+    {
+        fade.GetComponent<Fade_script>().FadeIn(0.5f);
+        yield return new WaitForSeconds(5f);
+        fade.GetComponent<Fade_script>().FadeOut(0.5f);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

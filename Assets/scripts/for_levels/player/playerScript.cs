@@ -67,7 +67,7 @@ public class playerScript : MonoBehaviour
             playerIsDead();
         }
 
-        if(playerMode.playerIsExecuting)
+        if(playerMode.playerIsExecuting == true)
         {
             playerRotation.enabled = false;
             legs.enabled = false;
