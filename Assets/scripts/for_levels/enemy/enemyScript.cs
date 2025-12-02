@@ -1,9 +1,13 @@
 using UnityEngine;
 using Unity.VisualScripting;
 using System.Collections;
+using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 public class enemyScript : MonoBehaviour
 {
+    public Sprite giveUpSprite;
     public float moveSpeed = 5.0f; //viholisen liikkumis nopeus
 
     public Transform enemyHoldPoint; //vihollisen holdPoint, eli objekti jolla hän pitää asen
@@ -36,10 +40,11 @@ public class enemyScript : MonoBehaviour
     private bool isDamaged = false; //onko vihollinen nyt maassa
     private bool withWeapon; //onko viholisella ase
 
-    //vihollisen alku asetukset
-    private bool withWeaponStart;
-    public GameObject enemyStartWeapon; // vihollisen alku ase (haluttaessa)
-    Vector3 startPosition;
+    private Vector2 direction;
+
+    private Transform targetWeapon;
+
+    private bool enemySeeWeapon = false;
 
 
     // liikumis animaatio funktio
@@ -57,48 +62,152 @@ public class enemyScript : MonoBehaviour
     // 
     private void enemyLogic()
     {
-        if(enemyHoldPoint.childCount > 0)
-        {
-            withWeapon = true;
-        }
-        else
-        {
-            withWeapon = false;
-        }
-
-        distance = Vector2.Distance(transform.position, player.transform.position);
-        Vector2 direction = (player.transform.position - transform.position).normalized;
-
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         // is enemy see a player
-        int layerMask = ~LayerMask.GetMask("Enemy", "Weapon", "AttackRadius"); // ignoring enemy and weapon layer
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, spotDistance, layerMask);
+        // is enemy see a player
+        if (withWeapon)
+{
+    // distance to player
+    Vector2 dirToPlayer = player.transform.position - transform.position;
+    float distToPlayer = dirToPlayer.magnitude;
 
+    // ignoring these layers
+    int layerMask = ~LayerMask.GetMask("Enemy", "Weapon", "AttackRadius"); 
+    
+    // raycast to player
+    RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToPlayer.normalized, spotDistance, layerMask);
+
+    // checking which object raycast is hitted
+    if (hit.collider != null && hit.collider.gameObject == player)
+    {
+        canSeePlayer = true;
+
+        // if enemy see player on distance
+        if (distToPlayer < spotDistance)
+        {
+            MoveToTarget(player.transform.position);
+        }
+    }
+    else
+    {
+        canSeePlayer = false;
+    }
+}
+else // if enemy dont have a weapon
+{
+    canSeePlayer = false; // enemy cant run to player without weapon
+
+    // find weapon in spot radius
+    Collider2D[] potentialWeapons = Physics2D.OverlapCircleAll(transform.position, spotDistance);
+    
+    float minDist = Mathf.Infinity;
+    Transform bestTarget = null;
+
+    // find nearest weapon
+    foreach (Collider2D col in potentialWeapons)
+    {
+        if (col.CompareTag("Pickup") && col.transform.parent == null)
+        {
+            float d = Vector2.Distance(transform.position, col.transform.position);
+            if (d < minDist)
+            {
+                minDist = d;
+                bestTarget = col.transform;
+            }
+        }
+    }
+    
+    targetWeapon = bestTarget;
+
+    // if weapon is findend checking the wall 
+    if (bestTarget != null)
+    {
+        Vector2 dirToWeapon = bestTarget.position - transform.position;
+        int layerMask = ~LayerMask.GetMask("Enemy", "AttackRadius", "Player");
+        
+        // raycast to weapon
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToWeapon.normalized, spotDistance, layerMask);
+
+        // checking is raycast hitted to Pickup
+        if (hit.collider != null && hit.collider.CompareTag("Pickup"))
+        {
+            enemySeeWeapon = true;
+            //Debug.Log(bestTarget);
+            
+            MoveToTarget(bestTarget.position);
+        }
+        else
+        {
+            enemySeeWeapon = false;
+            Debug.Log("weapon is behind the wall");
+        }
+    }
+    else
+    {
+         enemySeeWeapon = false; // if weapon is not in spot radius
+    }
+}
+
+// helping method
+void MoveToTarget(Vector3 targetPos)
+{
+    // moving
+    transform.position = Vector2.MoveTowards(
+        transform.position, 
+        targetPos, 
+        moveSpeed * Time.deltaTime
+    );
+
+    // rotation
+    Vector3 direction = targetPos - transform.position;
+    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; 
+    transform.rotation = Quaternion.Euler(Vector3.forward * angle);
+}
+    }
+
+    /*private void findWeapon()
+    {
+        GameObject[] items = GameObject.FindGameObjectsWithTag("Pickup");
+
+        float minDist = Mathf.Infinity;
+        Transform bestTarget = null;
+
+        // is enemy see a player
+        int layerMask = ~LayerMask.GetMask("Enemy", "AttackRadius"); // ignoring enemy and weapon layer
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, spotDistance, layerMask);
         if (hit.collider != null)
         {
-            if (hit.collider.gameObject == player)
+            if (hit.collider.transform == targetWeapon)
             {
-                canSeePlayer = true; 
+                Debug.Log("enemy is see weapon");
+                enemySeeWeapon = true;
             }
             else
             {
-                canSeePlayer = false;
+                enemySeeWeapon = false;
+                Debug.Log("enemy dont see weapon");
             }
         }
 
-        // is player is in range and see
-        if (distance < spotDistance && canSeePlayer)
+        foreach (GameObject item in items)
         {
-            transform.position = Vector2.MoveTowards(
-                transform.position,
-                player.transform.position,
-                moveSpeed * Time.deltaTime
-            );
+            if (item.transform.parent != null)
+                continue;
+              
+                float dist = Vector3.Distance(transform.position, item.transform.position);
 
-            transform.rotation = Quaternion.Euler(Vector3.forward * angle);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    bestTarget = item.transform;
+                }
+
         }
-    }
+
+        targetWeapon = bestTarget;
+    }*/
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -109,6 +218,12 @@ public class enemyScript : MonoBehaviour
         else if(other.CompareTag("PlayerAttackRadius"))
         {
             inTrigger = true;
+        }
+        else if(other.CompareTag("Pickup"))
+        {
+            Debug.Log("enemy get weapon");
+            other.transform.SetParent(enemyHoldPoint);
+            withWeapon = true;
         }
     }
 
@@ -204,16 +319,8 @@ public class enemyScript : MonoBehaviour
    
     void Start()
     {
-        //tarkistetaan että vihollisella on ase
-        if(enemyHoldPoint.childCount > 0)
-        {
-            withWeaponStart = true;
-            Debug.Log("enemy have a start weapon");
-        }
         
         CollectableManager.Instance.RegisterItem(this.gameObject); //add enemy to collectable manager
-
-        startPosition = transform.position; // getting enemy start position
 
         //asetetaan alku sprite viholisille
         sr.sprite = idleSprite;
@@ -223,22 +330,24 @@ public class enemyScript : MonoBehaviour
 
     void Update()
     {
+        if(enemyHoldPoint.childCount > 0)
+        {
+            withWeapon = true;
+        }
+        else
+        {
+            withWeapon = false;
+        }
         if(isDamaged == false)
         {
             enemyLogic();
         }
 
-        if(canSeePlayer == true)
+        if(canSeePlayer == true || enemySeeWeapon == true)
         {
             enemyMoveAnimation();
         }
 
-        if(playerMode.playerIsDead == true)
-        {
-            this.gameObject.SetActive(true);
-            gameObject.transform.position = startPosition;
-            enemyStartWeapon.transform.SetParent(enemyHoldPoint.transform);
-        }
         if(Input.GetMouseButtonDown(0) && inTrigger == true)
         {
             Interact();

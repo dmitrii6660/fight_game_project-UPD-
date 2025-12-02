@@ -57,12 +57,15 @@ public class training : MonoBehaviour
 
     private IEnumerator hold()
     {
-        yield return new WaitForSeconds(3f);
-        trainingText();
-        //Debug.Log("coroutine is finish");
-        StopAllCoroutines();
-        currentTraining += 1;
-        firstEnemy.SetActive(true);
+        if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+        {
+            yield return new WaitForSeconds(3f);
+            trainingText();
+            //Debug.Log("coroutine is finish");
+            StopAllCoroutines();
+            currentTraining += 1;
+            firstEnemy.SetActive(true);
+        }
     }
 
     private void destroyEnemy()

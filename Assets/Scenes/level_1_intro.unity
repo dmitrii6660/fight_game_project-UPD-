@@ -1642,7 +1642,7 @@ MonoBehaviour:
   - "jos n\xE4et vihollisen, tuu sen l\xE4helle ja paina RMB, kun vihollinen on kaatunut
     paina SPACE teloittamiseen"
   - "voit my\xF6s ottaa aseita painamalla E, aseilla voit nopeammin tappaa viholista"
-  - "hyv\xE4, nyt voi menn\xE4"
+  - "hyv\xE4, hypp\xE4\xE4 autoon ja kokoeile ensim\xE4isen tason"
   trainingObj: {fileID: 906492056}
   trainingUI: {fileID: 1195876824}
 --- !u!4 &871732264
@@ -2301,7 +2301,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2954,7 +2954,6 @@ Transform:
   - {fileID: 1715387148}
   - {fileID: 1796245477}
   - {fileID: 1180553141}
-  - {fileID: 2088413350}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1269427211
@@ -4300,7 +4299,7 @@ MonoBehaviour:
   idleSprite: {fileID: 1008067815367224243, guid: c8823ae9b8cac714899bfd5cb67d9349, type: 3}
   damagedSprite: {fileID: 6703675881598405494, guid: c8823ae9b8cac714899bfd5cb67d9349, type: 3}
   animationSpeed: 0.3
-  sr: {fileID: 1674658735}
+  sr: {fileID: 948787673}
   enemyStartWeapon: {fileID: 0}
 --- !u!1 &1674833795
 GameObject:
@@ -6402,51 +6401,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &2088413349
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2088413350}
-  - component: {fileID: 2088413351}
-  m_Layer: 0
-  m_Name: fadeIn_fadeOut
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2088413350
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088413349}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1243019601}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2088413351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088413349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 898a2891bd9fed546b4e941e3df4a227, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fade: {fileID: 0}
 --- !u!1 &2104255834
 GameObject:
   m_ObjectHideFlags: 0

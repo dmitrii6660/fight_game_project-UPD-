@@ -1431,13 +1431,14 @@ GameObject:
   m_Component:
   - component: {fileID: 287643281}
   - component: {fileID: 287643280}
+  - component: {fileID: 287643285}
   - component: {fileID: 287643279}
   - component: {fileID: 287643282}
   - component: {fileID: 287643283}
   - component: {fileID: 287643284}
   m_Layer: 6
   m_Name: enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1609,6 +1610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9677507d620e1f54eb47d68317493a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  giveUpSprite: {fileID: 0}
   moveSpeed: 5
   enemyHoldPoint: {fileID: 1023541744}
   legs: {fileID: 1726938527}
@@ -1623,7 +1625,33 @@ MonoBehaviour:
   damagedSprite: {fileID: 6703675881598405494, guid: c8823ae9b8cac714899bfd5cb67d9349, type: 3}
   animationSpeed: 0.2
   sr: {fileID: 28443882}
-  enemyStartWeapon: {fileID: 1503865501}
+--- !u!50 &287643285
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287643277}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &299159638
 GameObject:
   m_ObjectHideFlags: 0
@@ -2290,7 +2318,7 @@ GameObject:
   - component: {fileID: 422178581}
   - component: {fileID: 422178582}
   - component: {fileID: 422178583}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -19095,6 +19123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9677507d620e1f54eb47d68317493a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  giveUpSprite: {fileID: 0}
   moveSpeed: 5
   enemyHoldPoint: {fileID: 1287127701}
   legs: {fileID: 1014091696}
@@ -19109,7 +19138,6 @@ MonoBehaviour:
   damagedSprite: {fileID: 6703675881598405494, guid: c8823ae9b8cac714899bfd5cb67d9349, type: 3}
   animationSpeed: 0.2
   sr: {fileID: 1042106774}
-  enemyStartWeapon: {fileID: 2007864300}
 --- !u!114 &1789088600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20448,6 +20476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546da67a6f775934da6d6e49450f801f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportScene: 
   targetUI: {fileID: 1160497345}
   options:
   - {fileID: 402786679}

@@ -33,9 +33,9 @@ public class start_level : MonoBehaviour
 
      private IEnumerator fadeCoroutine()
     {
-        fade.GetComponent<Fade_script>().FadeIn(0.5f);
-        yield return new WaitForSeconds(5f);
         fade.GetComponent<Fade_script>().FadeOut(0.5f);
+        yield return new WaitForSeconds(5f);
+        fade.GetComponent<Fade_script>().FadeIn(0.5f);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

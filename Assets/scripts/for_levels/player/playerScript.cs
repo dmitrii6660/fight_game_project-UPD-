@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class playerScript : MonoBehaviour
 {
+    private string currentSceneName;
     public RotatePlayerWithHoldPoint playerRotation;
     public SpriteRenderer sr;
 
@@ -33,9 +34,11 @@ public class playerScript : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R))
         {
             playerMode.playerIsDead = false; 
+            playerMode.playerHaveWeapon = false;
+            playerMode.playerIsExecuting = false;
             deathText.SetActive(false);
             playerMove.enabled = true;
-            SceneManager.LoadScene("level_1");
+            SceneManager.LoadScene(currentSceneName);
             
         }
     }
@@ -54,6 +57,7 @@ public class playerScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentSceneName = SceneManager.GetActiveScene().name;
         rb = GetComponent<Rigidbody2D>();
         playerMove = GetComponent<movement>();
     }

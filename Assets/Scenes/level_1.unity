@@ -3046,6 +3046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546da67a6f775934da6d6e49450f801f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportScene: main_menu
   targetUI: {fileID: 379722906}
   options:
   - {fileID: 2100866531}
@@ -7368,6 +7369,7 @@ GameObject:
   - component: {fileID: 1896718530}
   - component: {fileID: 1896718529}
   - component: {fileID: 1896718528}
+  - component: {fileID: 1896718534}
   m_Layer: 6
   m_Name: enemy
   m_TagString: Untagged
@@ -7387,6 +7389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9677507d620e1f54eb47d68317493a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  giveUpSprite: {fileID: 0}
   moveSpeed: 5
   enemyHoldPoint: {fileID: 703161713}
   legs: {fileID: 897393465}
@@ -7401,7 +7404,6 @@ MonoBehaviour:
   damagedSprite: {fileID: 6703675881598405494, guid: c8823ae9b8cac714899bfd5cb67d9349, type: 3}
   animationSpeed: 0.2
   sr: {fileID: 780387567}
-  enemyStartWeapon: {fileID: 972980280}
 --- !u!114 &1896718529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7557,6 +7559,33 @@ Transform:
   - {fileID: 897393466}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1896718534
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896718527}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1986621853
 GameObject:
   m_ObjectHideFlags: 0
