@@ -3211,8 +3211,6 @@ MonoBehaviour:
   dialogObj: {fileID: 1198685079}
   player: {fileID: 816177265}
   target: {fileID: 1937656542}
-  startSceneAnimation: {fileID: 1723714692}
-  fade: {fileID: 2140802342}
 --- !u!1 &925314973
 GameObject:
   m_ObjectHideFlags: 0
@@ -5336,7 +5334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2140802341
 RectTransform:
   m_ObjectHideFlags: 0

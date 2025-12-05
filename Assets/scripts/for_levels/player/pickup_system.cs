@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerPickup : MonoBehaviour
@@ -61,7 +62,6 @@ public class PlayerPickup : MonoBehaviour
     private void Pickup()
     {
         playerMode.playerHaveWeapon = true;
-        Debug.Log("player gets: " + itemInRange.name);
         
         // item is now in player hands
         heldItem = itemInRange;

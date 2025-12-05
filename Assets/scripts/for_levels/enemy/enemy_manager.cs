@@ -7,11 +7,13 @@ Myös tässä scriptissä anettaan pisteitä tapetuista vihollisista
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro;
 using UnityEngine;
 
 public class CollectableManager : MonoBehaviour
 {
+    public ScoreCounter count;
     //when level is cleared
     public GameObject levelCleared;
 
@@ -25,7 +27,6 @@ public class CollectableManager : MonoBehaviour
     //for pts text
     public TextMeshProUGUI pts;
     public TextMeshProUGUI pts_hover;
-    private int score;
 
     // static link for other scripts
     public static CollectableManager Instance { get; private set; }
@@ -73,9 +74,10 @@ public class CollectableManager : MonoBehaviour
             pts_hover.text = (currentScore + 100).ToString();
         }
 
-        score += 100;
-        pts.text = "pts " + score;
-        pts_hover.text = "pts " + score;
+        level_storage.points += 100;
+        count.AddScore(level_storage.points);
+        //pts.text = "pts " + level_storage.points;
+        //pts_hover.text = "pts " + level_storage.points;
 
         // if enemy list
         if (remainingItems.Count == 1)

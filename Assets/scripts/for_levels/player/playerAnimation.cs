@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class spriteChanger : MonoBehaviour
 {
+    private bool playerIsAttacking; // [FLAG] lyökö pelaaja nyt
     public GameObject legs;
-    RotatePlayerWithHoldPoint rotateScript;
+    
     public SpriteRenderer sr;
     public Sprite[] executeSprites;
 
@@ -14,7 +15,6 @@ public class spriteChanger : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rotateScript = GetComponent<RotatePlayerWithHoldPoint>();
         sr = GetComponent<SpriteRenderer>();
     }
 
@@ -23,14 +23,18 @@ public class spriteChanger : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0) && playerMode.playerIsExecuting == false)
         {
-            StopAllCoroutines();
-            StartCoroutine(attackCoroutine());
+            if(playerIsAttacking == false)
+            {
+                StartCoroutine(attackCoroutine());
+            }
         }
     }
     private IEnumerator attackCoroutine()
     {
+        playerIsAttacking = true;
         sr.sprite = hitSprites[0];
         yield return new WaitForSeconds(0.2f);
         sr.sprite = playerSprite;
+        playerIsAttacking = false;
     }
 }

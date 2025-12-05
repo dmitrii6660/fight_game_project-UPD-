@@ -28,17 +28,16 @@ public class dialog : MonoBehaviour
     // tarvittava bool muuttuja jolla tiedetään onko pelaaja trigerin sisällä vai ei
     private bool inTrigger = false;
 
-    public GameObject startSceneAnimation;
-
-    public Fade_script fade;
-
     // kun pelaaja astuu dialog trigerin sisälle
-    private void OnTriggerEnter2D()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        dialogObj.SetActive(true); // näytetään tektit (dialogit)
-        playerRB.constraints = RigidbodyConstraints2D.FreezeAll; // jotta pelaaja ei pystyisi liikkumaan
-        playerMove.enabled = false; // jotta pelaaja ei pystyisi liikkumaan
-        inTrigger = true; // asennetaan inTrigger = true, eli pelaaja on triggerin sisällä 
+        if(other.CompareTag("Player"))
+        {
+            dialogObj.SetActive(true); // näytetään tektit (dialogit)
+            playerRB.constraints = RigidbodyConstraints2D.FreezeAll; // jotta pelaaja ei pystyisi liikkumaan
+            playerMove.enabled = false; // jotta pelaaja ei pystyisi liikkumaan
+            inTrigger = true; // asennetaan inTrigger = true, eli pelaaja on triggerin sisällä 
+        }
     }
 
     // funktio joka vaihtaa dialogin tekstiä
@@ -47,8 +46,8 @@ public class dialog : MonoBehaviour
         // jos dialogin tekstejä on jäljellä
         if(currentDialog < dialogText.Length)
         {
-            currentDialog += 1;
             dialogUI.text = dialogText[currentDialog];
+            currentDialog += 1;
         }
         // jos dialogin tekstit on loppunut
         else
@@ -68,13 +67,8 @@ public class dialog : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        startSceneAnimation.SetActive(false);
-        // laitetaan fade päälle
-        StartCoroutine(fadeCoroutine());
-    
         // laitetaan aluksi tekstit pois päältä
         dialogObj.SetActive(false); 
-        dialogUI.text = " ";
 
         // otetaan pelaajan tarvittavat komponentit
         playerRB = player.GetComponent<Rigidbody2D>(); 
@@ -92,13 +86,5 @@ public class dialog : MonoBehaviour
         {
             dialogChange();
         }
-    }
-
-    // fade coroutine
-    private IEnumerator fadeCoroutine()
-    {
-        fade.GetComponent<Fade_script>().FadeIn(0.5f);
-        yield return new WaitForSeconds(1);
-        fade.GetComponent<Fade_script>().FadeOut(0.5f);
     }
 }

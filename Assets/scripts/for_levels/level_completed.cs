@@ -16,7 +16,7 @@ public class level_completed : MonoBehaviour
     movement playerMove; // pelaajan liikkumis scripti
     public GameObject player; // pelaaja
 
-    public Fade_script fade; // tummennus scripti
+    public FadeController fade; // tummennus scripti
 
     //tässä vaijdetaan tekstin väriä kun pelaaja painaa down arrow tai up arrow
     private void optionSelectorHover()
@@ -61,11 +61,12 @@ public class level_completed : MonoBehaviour
     private IEnumerator transitionCoroutine()
     {
         playerMove.enabled = false; // pelaaja ei voi liikkua
-        fade.GetComponent<Fade_script>().FadeIn(0.5f); // tumennus
+        fade.FadeIn(); // tumennus
         yield return new WaitForSeconds(1);
         endOfLevel.SetActive(true); // näytetään viimeinen menu
         player.transform.position = new Vector3(100, 0, 0);
-        fade.GetComponent<Fade_script>().FadeOut(0.5f);
+        yield return new WaitForSeconds(1);
+        fade.FadeOut();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

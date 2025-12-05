@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class playerScript : MonoBehaviour
 {
+    public CameraShake cam;
     private string currentSceneName;
     public RotatePlayerWithHoldPoint playerRotation;
     public SpriteRenderer sr;
@@ -51,6 +52,7 @@ public class playerScript : MonoBehaviour
             currentFrame = (currentFrame + 1) % executeSprite.Length;
             sr.sprite = executeSprite[currentFrame];
             timer = 0f;
+            cam.Shake(0.2f, 0.1f);
         }
     }
 

@@ -3,7 +3,10 @@ using System.Collections;
 
 public class ItemBehaviour : MonoBehaviour
 {
-
+    private Transform lastParent;
+    public GameObject playerHoldPoint;
+    public Vector3 heldItemRotation = new Vector3(0f, 0f, 15f);
+    private Collider2D itemCollider;
     Vector3 startPosition;
     public Vector3 groundedRotationEuler = new Vector3(0, 0, 45f);
 
@@ -29,10 +32,19 @@ public class ItemBehaviour : MonoBehaviour
 
     void Start()
     {
+        lastParent = transform.parent;
+        //itemCollider = GetComponent<Collider2D>();
         CheckParent();
         startPosition = gameObject.transform.position;
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("Player") && transform.parent == null && Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("weapon is free");
+        }
+    }
 
     //unity funktio
     void OnTransformParentChanged()
@@ -45,20 +57,30 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (transform.parent == null)
         {
+            Debug.Log("enemy have a weapon");
             isHeld = false;
-
+            gameObject.GetComponent<Collider2D>().enabled = true;
             //set world cordinates here
             startPosition = gameObject.transform.position;
             transform.rotation = Quaternion.Euler(groundedRotationEuler);
         }
         else
         {  
+            Debug.Log("enemy dont have a weapon");
+            gameObject.GetComponent<Collider2D>().enabled = false;
+            //itemCollider.enabled = false;
             isHeld = true;
+            transform.localRotation = Quaternion.Euler(heldItemRotation); 
         }
     }
 
     void Update()
     {
+        if(transform.parent != lastParent)
+        {
+            lastParent = transform.parent;
+            CheckParent();
+        }
         if(isHeld == false)
         {
             floatUpDown();
