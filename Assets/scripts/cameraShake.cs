@@ -1,3 +1,6 @@
+/* tämä scripti on tarkoitettu cameran shake effectiä varten, kiinitä tämä scripti cameralle
+ja sitten voit muissa scripteissä käyttää shake effect functioita*/
+
 using UnityEngine;
 
 public class CameraShake : MonoBehaviour
@@ -11,10 +14,10 @@ public class CameraShake : MonoBehaviour
     }
 
     /// <summary>
-    /// Запускает тряску камеры.
+    /// aloitetaan kameran shake effect
     /// </summary>
-    /// <param name="duration">Длительность</param>
-    /// <param name="magnitude">Сила тряски</param>
+    /// <param name="duration">kesto</param>
+    /// <param name="magnitude">tärinän voimakkuus</param>
     public void Shake(float duration, float magnitude)
     {
         if (shakeRoutine != null)
@@ -39,7 +42,7 @@ public class CameraShake : MonoBehaviour
             yield return null;
         }
 
-        // восстановить позицию
+        // palautetaan asento (position)
         transform.localPosition = originalPos;
         shakeRoutine = null;
     }

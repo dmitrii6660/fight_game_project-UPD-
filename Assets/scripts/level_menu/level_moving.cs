@@ -24,7 +24,6 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
     {
         if (currentIndex == 0)
         {
-
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 SceneManager.LoadScene("level_1");
@@ -32,8 +31,10 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
         }
         else if (currentIndex == 1)
         {
-            //level_name.text = "second level";
-            //scene_number.text = "scene 2";
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SceneManager.LoadScene("level_2");
+            }
         }
          else if (currentIndex == 2)
         {

@@ -14,6 +14,8 @@ using UnityEngine;
 public class CollectableManager : MonoBehaviour
 {
     public ScoreCounter count;
+
+    public ScoreCounter count_hover;
     //when level is cleared
     public GameObject levelCleared;
 
@@ -68,14 +70,16 @@ public class CollectableManager : MonoBehaviour
         Debug.Log($"enemy is destroyed: {remainingItems.Count}");
 
         // for points adding
-        if (int.TryParse(pts.text, out int currentScore))
+        /*if (int.TryParse(pts.text, out int currentScore))
         {
             pts.text = (currentScore + 100).ToString();
             pts_hover.text = (currentScore + 100).ToString();
-        }
+        }*/
 
+        AudioManager.Instance.PlaySound("enemyKill");
         level_storage.points += 100;
-        count.AddScore(level_storage.points);
+        count.AddScore(100);
+        count_hover.AddScore(100);
         //pts.text = "pts " + level_storage.points;
         //pts_hover.text = "pts " + level_storage.points;
 

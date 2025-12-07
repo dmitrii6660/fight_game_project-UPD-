@@ -6,7 +6,7 @@ public class ScoreCounter : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public float speed = 100f; // скорость увеличения числа (чем больше — тем быстрее)
 
-    private int currentValue = level_storage.points;
+    private int currentValue = 0;
     private int targetValue = 0;
     private Coroutine animRoutine;
 
@@ -41,6 +41,6 @@ public class ScoreCounter : MonoBehaviour
 
     private void UpdateText()
     {
-        scoreText.text = currentValue.ToString();
+        scoreText.text = "pts " + currentValue.ToString();
     }
 }

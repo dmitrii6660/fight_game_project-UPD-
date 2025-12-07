@@ -25,6 +25,7 @@ public class spriteChanger : MonoBehaviour
         {
             if(playerIsAttacking == false)
             {
+                AudioManager.Instance.PlaySound("attackWithWeapon");
                 StartCoroutine(attackCoroutine());
             }
         }
