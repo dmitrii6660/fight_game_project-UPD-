@@ -58,7 +58,7 @@ public class FadeText : MonoBehaviour
   
     void OnDestroy()
     {
-        // Сбросить только если мы покинули сцену (а не перезагрузили)
+        // flag is false when is leaved from scene (not reloaded)
         if (SceneManager.GetActiveScene().name != "level_2")
         {
             textShownInThisVisit = false;
@@ -67,8 +67,8 @@ public class FadeText : MonoBehaviour
 
     void ShowText()
     {
-        // Твой код показа текста
-        Debug.Log("Показ текста!");
+        // showning text
+        Debug.Log("text is show!");
         gameObject.SetActive(true);
         StartCoroutine(FadeInAndOut());
     }

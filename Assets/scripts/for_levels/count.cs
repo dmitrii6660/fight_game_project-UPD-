@@ -1,12 +1,16 @@
+/* Tämä scripti on tarkoitettu pisteiden lisämis animaatiolle, eli kun pelaaja saa pisteitä
+niin ne nopasti muuttu eikä heti*/
+
+
 using UnityEngine;
 using TMPro;
 
 public class ScoreCounter : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
-    public float speed = 100f; // скорость увеличения числа (чем больше — тем быстрее)
+    public float speed = 100f; // luvun muuttumis nopeus
 
-    private int currentValue = 0;
+    private int currentValue = 0; // nykyinen luku
     private int targetValue = 0;
     private Coroutine animRoutine;
 

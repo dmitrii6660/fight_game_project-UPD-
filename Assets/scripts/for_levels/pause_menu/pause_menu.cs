@@ -1,11 +1,13 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class pause_menu : MonoBehaviour
 {
+    private bool gameIsPaused = false;
     //array for options
     public TextMeshProUGUI[] optionText;
 
@@ -18,8 +20,14 @@ public class pause_menu : MonoBehaviour
 
     private int currentIndex = 2;
 
+    private string currentSceneName;
+
     void selectedOption()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            
+        }
         if (Input.GetKeyDown(KeyCode.Return) && currentIndex == 2)
         {
             pauseMenuUI.SetActive(false);
@@ -30,20 +38,23 @@ public class pause_menu : MonoBehaviour
         {
             Debug.Log("level rewind");
             pauseMenuUI.SetActive(false);
-              Time.timeScale = 1f; // return normal time
-            SceneManager.LoadScene("level_1");
+            Time.timeScale = 1f; // return normal time
+            SceneManager.LoadScene(currentSceneName);
         }
         else if (Input.GetKeyDown(KeyCode.Return) && currentIndex == 0)
         {
             Debug.Log("back to main menu");
             pauseMenuUI.SetActive(false);
-              Time.timeScale = 1f; // return normal time
+            Time.timeScale = 1f; // return normal time
             SceneManager.LoadScene("main_menu");
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameIsPaused = false;
+        pauseMenuUI.SetActive(false);
+        currentSceneName = SceneManager.GetActiveScene().name;
         //getting current color
         currentColor = pause_menu_text.color;
     }
@@ -51,7 +62,41 @@ public class pause_menu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        selectedOption();
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(gameIsPaused == true)
+            {
+                resume();
+            }
+            else
+            {
+                pause();
+            }
+        }
+
+        if(gameIsPaused == true)
+        {
+            selectedOption();
+            hover();
+        }
+    }
+
+    void resume()
+    {
+        gameIsPaused = false;
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    void pause()
+    {
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f; // freezing time
+        gameIsPaused = true;
+    }
+
+    void hover()
+    {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (currentIndex != 0)
@@ -69,6 +114,6 @@ public class pause_menu : MonoBehaviour
                 currentIndex += 1;
                 optionText[currentIndex].color = new Color(255f, 0f, 189f);
             }
-        }
+        }    
     }
 }

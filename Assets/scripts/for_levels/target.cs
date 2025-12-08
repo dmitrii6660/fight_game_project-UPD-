@@ -23,6 +23,7 @@ public class target : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            Debug.Log("u must go to car");
             targetText.text = "go into car";
             gameObject.SetActive(false);
         }
@@ -35,7 +36,6 @@ public class target : MonoBehaviour
         {
             // laitetaan teksti ja ui elementi päälle
             targetUI.SetActive(true);
-            targetText.text = message;
         }
     }
 }

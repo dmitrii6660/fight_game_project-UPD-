@@ -10,6 +10,8 @@ public class AudioManager : MonoBehaviour
     [Header("audio clips")]
     public AudioClip clickSound;
     public AudioClip attackWithWeapon;
+
+    public AudioClip punch;
     //public AudioClip hitSound;
     //public AudioClip explosionSound;
 
@@ -35,6 +37,7 @@ public class AudioManager : MonoBehaviour
         {
             "enemyKill" => clickSound,
             "attackWithWeapon" => attackWithWeapon,
+            "punch" => punch,
             //"hit" => hitSound,
             //"explosion" => explosionSound,
             _ => null

@@ -13,6 +13,7 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
     //public TextMeshProUGUI scene_number;
 
     public GameObject[] levels;    // array for levels
+    
     public float levelWidth = 10f; // level width
     public float moveSpeed = 10f;  // moving speed
 

@@ -28,6 +28,9 @@ public class dialog : MonoBehaviour
     // tarvittava bool muuttuja jolla tiedetään onko pelaaja trigerin sisällä vai ei
     private bool inTrigger = false;
 
+    public GameObject targetUI;
+    public TextMeshProUGUI targetText;
+
     // kun pelaaja astuu dialog trigerin sisälle
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -37,6 +40,7 @@ public class dialog : MonoBehaviour
             playerRB.constraints = RigidbodyConstraints2D.FreezeAll; // jotta pelaaja ei pystyisi liikkumaan
             playerMove.enabled = false; // jotta pelaaja ei pystyisi liikkumaan
             inTrigger = true; // asennetaan inTrigger = true, eli pelaaja on triggerin sisällä 
+            targetText.text = "go to car";
         }
     }
 
@@ -61,6 +65,7 @@ public class dialog : MonoBehaviour
             dialogUI.text = ""; 
             dialogObj.SetActive(false); 
 
+            Debug.Log("text must show up");
             target.SetActive(true); // laitetaan target päälle
         }
     }

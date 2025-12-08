@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class phone_call : MonoBehaviour
@@ -6,6 +7,9 @@ public class phone_call : MonoBehaviour
     public FadeController fade;
     public AudioSource source;
     public AudioClip phoneCall;
+
+    public GameObject targetUI;
+    public TextMeshProUGUI targetText;
 
     private bool soundHasPlayed = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,7 +27,6 @@ public class phone_call : MonoBehaviour
     private void Start()
     {
         fade.FadeOut();
-        cam.Shake(0.2f, 0.1f); 
     }
 
     void OnTriggerEnter2D(Collider2D other)

@@ -3,12 +3,12 @@ using TMPro; // Убери, если используешь обычный UI Te
 
 public class pause_text_animation : MonoBehaviour
 {
-    [Header("Настройки цвета")]
+    [Header("color settings")]
     public Color startColor = Color.cyan;    
     public Color endColor = Color.magenta;   
     public float duration = 2f;             
 
-    [Header("Ссылка на текст")]
+    [Header("link for text")]
     public TextMeshProUGUI textTMP;          
 
     private float t = 0f;
