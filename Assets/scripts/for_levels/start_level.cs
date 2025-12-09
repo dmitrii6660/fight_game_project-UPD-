@@ -5,9 +5,10 @@ using UnityEngine.UIElements;
 
 public class start_level : MonoBehaviour
 {
+    public string teleportingSceneName;
     movement playerMove;
 
-      public Fade_script fade;
+    public FadeController fade;
     public GameObject startTextes;
     public GameObject player;
 
@@ -16,6 +17,7 @@ public class start_level : MonoBehaviour
 
     private void OnTriggerEnter2D()
     {
+        fade.FadeIn();
         playerRB.constraints = RigidbodyConstraints2D.FreezeAll;
         playerMove.enabled = false;
         player.transform.position = new Vector3(50, 0, 0);
@@ -28,14 +30,14 @@ public class start_level : MonoBehaviour
     private IEnumerator teleportingToLevel()
     {
         yield return new WaitForSeconds(6);
-        SceneManager.LoadScene("level_1");
+        SceneManager.LoadScene(teleportingSceneName);
     }
 
      private IEnumerator fadeCoroutine()
     {
-        fade.GetComponent<Fade_script>().FadeOut(0.5f);
+        fade.FadeOut();
         yield return new WaitForSeconds(5f);
-        fade.GetComponent<Fade_script>().FadeIn(0.5f);
+        fade.FadeIn();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

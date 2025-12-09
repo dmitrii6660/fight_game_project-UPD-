@@ -3,9 +3,13 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class InfiniteLevelScroll_NoHide : MonoBehaviour
 {
+    public FadeController fade;
+    public Vector3 targetScale = new Vector3(2f, 2f, 2f);
+    public float duration = 1f;
     //level name and scene number variables
     //public TextMeshProUGUI level_name;
 
@@ -21,20 +25,26 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
     private Vector3 targetOffset;         // moveing all levels
     private bool isMoving = false;
 
+    void Start()
+    {
+    
+    }
     void switchLevel()
     {
         if (currentIndex == 0)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                SceneManager.LoadScene("level_1");
+                StartCoroutine(teleportCoroutine("level_1_intro"));
+                //SceneManager.LoadScene("level_1");
             }
         }
         else if (currentIndex == 1)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                SceneManager.LoadScene("level_2");
+                StartCoroutine(teleportCoroutine("level_2_intro"));
+                //SceneManager.LoadScene("level_2");
             }
         }
          else if (currentIndex == 2)
@@ -42,6 +52,13 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
             //level_name.text = "final level";
             //scene_number.text = "scene 3";
         }
+    }
+
+    private IEnumerator teleportCoroutine(string levelName)
+    {
+        fade.FadeIn();
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(levelName);
     }
 
     void Update()

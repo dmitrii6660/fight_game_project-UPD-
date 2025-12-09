@@ -52,7 +52,7 @@ public class level_completed : MonoBehaviour
         {
             //StartCoroutine(teleportingCoroutineMain());
             fade.FadeIn();
-            SceneManager.LoadScene("level_menu");
+            StartCoroutine(teleportingCoroutineMain());
             Debug.Log("ure loaded level menu");
         }
     }

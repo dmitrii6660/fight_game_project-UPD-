@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class start_level_controller : MonoBehaviour
 {
-    public GameObject end;
+   // public GameObject end;
     public FadeController fade;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        end.SetActive(false);
+        //end.SetActive(false);
         fade.FadeOut();
         //Cursor.visible = false;       
         //Cursor.lockState = CursorLockMode.None; 

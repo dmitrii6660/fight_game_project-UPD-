@@ -2,6 +2,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class playerScript : MonoBehaviour
 {
@@ -70,7 +71,6 @@ public class playerScript : MonoBehaviour
     {
         if(playerMode.playerIsDead == true)
         {
-            Debug.Log("player is death!!!!");
             playerIsDead();
         }
 
@@ -89,7 +89,7 @@ public class playerScript : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
-        /*if(holdPoint == null)
+       /* if(holdPoint == null)
         {
             playerMode.playerHaveWeapon = false;
         }

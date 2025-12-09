@@ -4,9 +4,11 @@ using Unity.VisualScripting;
 using UnityEditor.XR;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Collections;
 
 public class selector : MonoBehaviour
 {
+    public FadeController fade;
     //settings and main menu (set active/disable)
     public GameObject main_menu;
     public GameObject settings_menu;
@@ -20,7 +22,8 @@ public class selector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return) && currentIndex == 2)
         {
-            SceneManager.LoadScene("level_menu");
+            //SceneManager.LoadScene("level_menu");
+            StartCoroutine(teleportToScene("level_menu"));
         }
         else if (Input.GetKeyDown(KeyCode.Return) && currentIndex == 1)
         {
@@ -66,5 +69,12 @@ public class selector : MonoBehaviour
             Debug.Log(currentIndex);
         }
         //}    
+    }
+
+    private IEnumerator teleportToScene(string sceneName)
+    {
+        fade.FadeIn(); 
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(sceneName);
     }
 }
