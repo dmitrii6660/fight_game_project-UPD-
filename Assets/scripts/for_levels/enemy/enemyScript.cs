@@ -7,45 +7,48 @@ using JetBrains.Annotations;
 
 public class enemyScript : MonoBehaviour
 {
+    [Header("Скрипт рандомного движения")]
+    public EnemyMovement random; // Сюда нужно перетащить скрипт EnemyMovement в инспекторе
+
     private Rigidbody2D enemyRB;
-    public Sprite giveUpSprite;
-    public float moveSpeed = 5.0f; //viholisen liikkumis nopeus
+    public Sprite giveUpSprite; // можно игнорировать
+    public float moveSpeed = 5.0f; //скорсть перемещение
 
-    public Transform enemyHoldPoint; //vihollisen holdPoint, eli objekti jolla hän pitää asen
-    public SpriteRenderer legs; //vihollisen jalat, tarvitaan animatiolle kun vihollinen liikku
-    public GameObject player; // pelaaja
-    public GameObject playerSprite;
+    public Transform enemyHoldPoint; //рука врага
+    public SpriteRenderer legs; //можно игнорировать
+    public GameObject player; // игрок
+    public GameObject playerSprite; // можешь игнорировать
 
-    private bool inTrigger = false; // onko pelaajan AttackRadius osunut viholliseen
+    private bool inTrigger = false; // попал ли игрок по врагу
 
-    private bool isTiming = false;
+    private bool isTiming = false; // время пока игрок может добить врага
 
-    public float spotDistance; // kuinka pitkälle vihollinen voi nähdä pelaajan
+    public float spotDistance; // как далеко враг может видеть
 
     private float distance; 
 
-    private bool canSeePlayer; // näkeekö vihollinen pelaajan
+    private bool canSeePlayer; // видет ли враг игрока
 
-    // animaatiolle (sprites)
-    public Sprite[] movementSprites; //vihollisen liikumis sprites
-    public Sprite idleSprite; //vihollisen tavallinen sprite, esim kun vihollinen on paikalla
-    public Sprite damagedSprite; // kun vihollista on lyöty
+    // можно игнорировать
+    public Sprite[] movementSprites;
+    public Sprite idleSprite; 
+    public Sprite damagedSprite; 
 
-    // animaatiolle
+    // можно игнорировать
     private int currentFrame = 0;
     private float timer = 0f;
     public float animationSpeed = 0.1f; 
     public SpriteRenderer sr; 
 
-    // muut tarkistuksen liittyviä juttuja
-    private bool isDamaged = false; //onko vihollinen nyt maassa
-    private bool withWeapon; //onko viholisella ase
+    
+    private bool isDamaged = false; // если игрок ударил по врагу
+    private bool withWeapon; //есть ли у врага оружие
 
     private Vector2 direction;
 
     private Transform targetWeapon;
 
-    private bool enemySeeWeapon = false;
+    private bool enemySeeWeapon = false; // видет ли враг оружие
 
 
     // liikumis animaatio funktio
@@ -61,50 +64,68 @@ public class enemyScript : MonoBehaviour
     }
 
     // 
+    // логика врага
     private void enemyLogic()
     {
+        // Вычисляем направление, только если есть цель (чтобы избежать ошибок)
+        if (player != null)
+        {
+             direction = player.transform.position - transform.position;
+        }
+        
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // is enemy see a player
+        // если у врага есть оружие проверяем видит ли он игрока
         if (withWeapon)
         {
-            // distance to player
+            // дистанциа до игрока
             Vector2 dirToPlayer = player.transform.position - transform.position;
             float distToPlayer = dirToPlayer.magnitude;
 
-            // ignoring these layers
+            // игнорим эти слои
             int layerMask = ~LayerMask.GetMask("Enemy", "Weapon", "AttackRadius"); 
             
             // raycast to player
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToPlayer.normalized, spotDistance, layerMask);
 
-            // checking which object raycast is hitted
+            // проверяем куда попал луч
             if (hit.collider != null && hit.collider.gameObject == player)
             {
                 canSeePlayer = true;
 
-                // if enemy see player on distance
+                // если враг видет игрока на растоянии
                 if (distToPlayer < spotDistance)
                 {
+                    // --- ИЗМЕНЕНИЕ: Враг видит игрока ---
+                    // Отключаем рандомное хождение
+                    if (random != null) random.enabled = false;
+                    
+                    // Обнуляем физическую скорость, чтобы MoveTowards работал корректно
+                    if (enemyRB != null) enemyRB.velocity = Vector2.zero;
+
                     MoveToTarget(player.transform.position);
                 }
             }
             else
             {
                 canSeePlayer = false;
+                
+                // --- ИЗМЕНЕНИЕ: Враг потерял игрока ---
+                // Включаем рандомное хождение
+                if (random != null) random.enabled = true;
             }
         }
-        else // if enemy dont have a weapon
+        else // если у врага нет оружия
         {
-            canSeePlayer = false; // enemy cant run to player without weapon
+            canSeePlayer = false; 
 
-            // find weapon in spot radius
+            // ищем оружия на растоянии
             Collider2D[] potentialWeapons = Physics2D.OverlapCircleAll(transform.position, spotDistance);
             
             float minDist = Mathf.Infinity;
             Transform bestTarget = null;
 
-            // find nearest weapon
+            // враг может брать только одно оружие, ищем ближайшие оружие
             foreach (Collider2D col in potentialWeapons)
             {
                 if (col.CompareTag("Pickup") && col.transform.parent == null)
@@ -120,51 +141,62 @@ public class enemyScript : MonoBehaviour
             
             targetWeapon = bestTarget;
 
-            // if weapon is findend checking the wall 
+            // если оружие найдено, проверяем не находится ли оно за стеной
             if (bestTarget != null)
             {
                 Vector2 dirToWeapon = bestTarget.position - transform.position;
                 int layerMask = ~LayerMask.GetMask("Enemy", "AttackRadius", "Player");
                 
-                // raycast to weapon
+                // луч до оружия
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToWeapon.normalized, spotDistance, layerMask);
 
-                // checking is raycast hitted to Pickup
+                // в игре у оружий есть тэг "Pickup", проверяем наличиа тэга на обьекте
                 if (hit.collider != null && hit.collider.CompareTag("Pickup"))
                 {
+                    Debug.Log("enemy see weapon jj");
                     enemySeeWeapon = true;
-                    //Debug.Log(bestTarget);
+                                
+                    // --- ИЗМЕНЕНИЕ: Враг видит оружие ---
+                    // Отключаем рандомное хождение
+                    if (random != null) random.enabled = false;
                     
+                    if (enemyRB != null) enemyRB.velocity = Vector2.zero;
+
                     MoveToTarget(bestTarget.position);
                 }
                 else
                 {
                     enemySeeWeapon = false;
-                    Debug.Log("weapon is behind the wall");
+                    // --- ИЗМЕНЕНИЕ: Враг не видит оружие (за стеной) ---
+                    if (random != null) random.enabled = true;
                 }
             }
             else
             {
-                enemySeeWeapon = false; // if weapon is not in spot radius
+                enemySeeWeapon = false; // если оружие не в радиусе видимости
+                
+                // --- ИЗМЕНЕНИЕ: Оружия рядом нет вообще ---
+                // Включаем рандомное хождение
+                if (random != null) random.enabled = true;
             }
         }
+    }
 
     // enemy is moving to target
     void MoveToTarget(Vector3 targetPos)
     {
-        // moving
+        // движение
         transform.position = Vector2.MoveTowards(
             transform.position, 
             targetPos, 
             moveSpeed * Time.deltaTime
         );
 
-        // rotation
+        // поворот врага
         Vector3 direction = targetPos - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; 
         transform.rotation = Quaternion.Euler(Vector3.forward * angle);
     }
-}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -294,6 +326,11 @@ private IEnumerator enemyIsHittedCoroutine()
    
     void Start()
     {
+        enemyRB = GetComponent<Rigidbody2D>();
+        
+        // На старте, если скрипт назначен, включаем рандомное движение
+        if (random != null) random.enabled = true;
+        random.enabled = true;
         CollectableManager.Instance.RegisterItem(this.gameObject); //add enemy to collectable manager
 
         //asetetaan alku sprite viholisille
@@ -317,11 +354,9 @@ private IEnumerator enemyIsHittedCoroutine()
             enemyLogic();
         }
 
-        if(canSeePlayer == true || enemySeeWeapon == true)
-        {
-            enemyMoveAnimation();
-        }
-
+       
+        enemyMoveAnimation();
+        
         if(Input.GetMouseButtonDown(0) && inTrigger == true)
         {
             Interact();
@@ -329,6 +364,7 @@ private IEnumerator enemyIsHittedCoroutine()
         if(playerMode.playerIsExecuting)
         {
             legs.enabled = false;
+     
         }
     }
 }

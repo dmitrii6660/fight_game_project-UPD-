@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - PlayerCore
   - PlayerAttackRadius
+  - Wall
   layers:
   - Default
   - TransparentFX
