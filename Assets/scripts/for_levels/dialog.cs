@@ -8,6 +8,7 @@ using System.Collections;
 
 public class dialog : MonoBehaviour
 {
+    public GameObject teleportToLevel;
     // dialog asiat
     public TextMeshProUGUI dialogUI;
 
@@ -66,12 +67,14 @@ public class dialog : MonoBehaviour
             dialogObj.SetActive(false); 
 
             Debug.Log("text must show up");
-            target.SetActive(true); // laitetaan target päälle
+            //target.SetActive(true); // laitetaan target päälle
+            teleportToLevel.SetActive(true);
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        teleportToLevel.SetActive(false);
         // laitetaan aluksi tekstit pois päältä
         dialogObj.SetActive(false); 
 

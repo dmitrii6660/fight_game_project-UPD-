@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a404778f0e168644fbe48429f603b452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teleportToLevel: {fileID: 505170673}
   dialogUI: {fileID: 746414827}
   dialogText:
   - "l\xE4hde t\xE4\xE4lt\xE4, me soitetaan sinulle my\xF6hemmin"
@@ -5746,7 +5747,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: hello
+  m_text: ggggg
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fa222599f0424754a8cbce5ea8c62db3, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a4d04a3fcedc2804dbf3d27108f8aa8f, type: 2}
@@ -7699,7 +7700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1285432630
 RectTransform:
   m_ObjectHideFlags: 0
