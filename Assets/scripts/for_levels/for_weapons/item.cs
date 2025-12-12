@@ -101,25 +101,25 @@ private IEnumerator AttackCoroutine()
 {
     isAttacking = true;
 
-    // локальный стартовый (нулевой) поворот оружия
+    // local start rotation
     Quaternion startRotation = Quaternion.identity;
 
-    // поворот влево и вправо
-    Quaternion leftRotation  = Quaternion.Euler(0, 0, attackAngle);      // например +90°
-    Quaternion rightRotation = Quaternion.Euler(0, 0, -attackAngle);     // например -90°
+    // right and left rotation
+    Quaternion leftRotation  = Quaternion.Euler(0, 0, attackAngle);     
+    Quaternion rightRotation = Quaternion.Euler(0, 0, -attackAngle);   
 
-    // выбираем направление поворота
+    // valitaan kääntymis suuntaa
     Quaternion from, to;
 
     if (!flipped)
     {
-        // первый клик → поворот влево
+        // jos pelaaja painaa yhden kerran
         from = startRotation;
         to   = leftRotation;
     }
     else
     {
-        // второй клик → поворот вправо
+        // jos pelaaja painaa toisen kerran vaihdetaan suunta
         from = leftRotation;
         to   = rightRotation;
     }
@@ -137,7 +137,7 @@ private IEnumerator AttackCoroutine()
 
     transform.localRotation = to;
 
-    flipped = !flipped;  // переключаем состояние
+    flipped = !flipped;  // vaihdetaan flag
     isAttacking = false;
 }
 }
