@@ -50,7 +50,7 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
             {
                 // muut tasot piilotetaan tai laitetaan niitä kauaksi
                 levels[i].transform.position = leftPos; 
-                levels[i].SetActive(false); 
+                //levels[i].SetActive(false); 
             }
         }
     }
@@ -61,7 +61,7 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 Debug.Log("level 1");
-                //StartCoroutine(teleportCoroutine("level_1_intro"));
+                StartCoroutine(teleportCoroutine("training"));
                 //SceneManager.LoadScene("level_1");
             }
         }
@@ -70,7 +70,7 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 Debug.Log("level 2");
-                StartCoroutine(teleportCoroutine("level_2_intro"));
+                StartCoroutine(teleportCoroutine("level_1_intro"));
                 //SceneManager.LoadScene("level_2");
             }
         }
@@ -80,6 +80,16 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
             {
                 Debug.Log("level 3");
                 StartCoroutine(teleportCoroutine("level_2_intro"));
+                //SceneManager.LoadScene("level_2");
+            }
+        }
+
+          else if (currentIndex == 3)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                Debug.Log("level 3");
+                StartCoroutine(teleportCoroutine("level_3_intro"));
                 //SceneManager.LoadScene("level_2");
             }
         }
@@ -155,7 +165,7 @@ public class InfiniteLevelScroll_NoHide : MonoBehaviour
         oldSprite.transform.position = oldTarget;
         
         // laitetaan jälkeinen taso piilon
-        oldSprite.SetActive(false);
+        //oldSprite.SetActive(false);
 
         // animaatio on ohi
         isMoving = false;

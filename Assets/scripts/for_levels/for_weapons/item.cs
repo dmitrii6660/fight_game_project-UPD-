@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ItemBehaviour : MonoBehaviour
 {
+    private bool flipped = false;
     private Transform lastParent;
     public GameObject playerHoldPoint;
     public Vector3 heldItemRotation = new Vector3(0f, 0f, 15f);
@@ -88,59 +89,55 @@ public class ItemBehaviour : MonoBehaviour
         //some code here
     }
 
-    public bool Attack()
+    public void Attack()
+{
+    if (!isAttacking)
     {
-        if (isAttacking)
-        {
-            return false; // dont start new hit animtion when current is not ended
-        }
-
-        // starting animatio coroutine
         StartCoroutine(AttackCoroutine());
-        return true;
     }
+}
 
-    private IEnumerator AttackCoroutine()
+private IEnumerator AttackCoroutine()
+{
+    isAttacking = true;
+
+    // локальный стартовый (нулевой) поворот оружия
+    Quaternion startRotation = Quaternion.identity;
+
+    // поворот влево и вправо
+    Quaternion leftRotation  = Quaternion.Euler(0, 0, attackAngle);      // например +90°
+    Quaternion rightRotation = Quaternion.Euler(0, 0, -attackAngle);     // например -90°
+
+    // выбираем направление поворота
+    Quaternion from, to;
+
+    if (!flipped)
     {
-        isAttacking = true;
-        
-        // storage start position -- PlayerPickup: Quaternion.identity)
-        Quaternion startRotation = transform.localRotation;
-        
-        // setting last rotation (local positions)
-        Quaternion targetRotation = startRotation * Quaternion.Euler(0, 0, attackAngle);
-        
-        float timer = 0f;
-        
-        // animation start
-        while (timer < attackDuration)
-        {
-            float t = timer / attackDuration;
-            // lerp for smooth animation
-            transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, t);
-            
-            timer += Time.deltaTime;
-            yield return null; 
-        }
-        
-        // setting rotation to end point
-        transform.localRotation = targetRotation; 
-        
-        // getting back start position
-        timer = 0f;
-        while (timer < attackDuration)
-        {
-            float t = timer / attackDuration;
-            
-            transform.localRotation = Quaternion.Lerp(targetRotation, startRotation, t);
-            
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        // setting rotation to start point
-        transform.localRotation = startRotation;
-
-        isAttacking = false;
+        // первый клик → поворот влево
+        from = startRotation;
+        to   = leftRotation;
     }
+    else
+    {
+        // второй клик → поворот вправо
+        from = leftRotation;
+        to   = rightRotation;
+    }
+
+    float timer = 0f;
+
+    while (timer < attackDuration)
+    {
+        float t = timer / attackDuration;
+        transform.localRotation = Quaternion.Lerp(from, to, t);
+
+        timer += Time.deltaTime;
+        yield return null;
+    }
+
+    transform.localRotation = to;
+
+    flipped = !flipped;  // переключаем состояние
+    isAttacking = false;
+}
 }

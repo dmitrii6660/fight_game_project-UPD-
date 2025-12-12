@@ -5237,6 +5237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: {fileID: 2025442535}
+  hideCursor: 0
 --- !u!4 &539628496
 Transform:
   m_ObjectHideFlags: 0

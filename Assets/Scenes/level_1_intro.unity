@@ -4453,6 +4453,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade: {fileID: 1286305243}
+  cursorTexture: {fileID: 2800000, guid: d9a86e00695ddb24482c6623354a8409, type: 3}
+  hotspot: {x: 0, y: 0}
+  cursorMode: 0
+  hideCursor: 0
 --- !u!4 &940554747
 Transform:
   m_ObjectHideFlags: 0

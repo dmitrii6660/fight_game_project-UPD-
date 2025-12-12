@@ -6,18 +6,21 @@ public class start_level_controller : MonoBehaviour
 {
    // public GameObject end;
     public FadeController fade;
+
+    public bool hideCursor = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //end.SetActive(false);
+        level_storage.isLevelCleared = false;
+        level_storage.points = 0;
+        if(hideCursor == true)
+        {
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.visible = true;
+        }
         fade.FadeOut();
-        //Cursor.visible = false;       
-        //Cursor.lockState = CursorLockMode.None; 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
